@@ -1,5 +1,5 @@
 /* tslint:disable */
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Divider, Col, Row } from 'antd';
 import * as React from 'react';
 // tslint:disable-next-line: ordered-imports
 import { useMutation } from 'react-apollo';
@@ -41,42 +41,47 @@ const RegisterUserForm = () => {
       render={(formikbag) => {
         return (
           <form>
-            <Form.Item>
-              <Input
-                name="username"
-                placeholder="Username"
-                onChange={(e) => {
-                  formikbag.setFieldValue('username', e.target.value);
-                }}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Input
-                name="email"
-                placeholder="Email"
-                onChange={(e) => {
-                  formikbag.setFieldValue('email', e.target.value);
-                }}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Input
-                name="password"
-                placeholder="Password"
-                onChange={(e) => {
-                  formikbag.setFieldValue('password', e.target.value);
-                }}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="button"
-                onClick={() => formikbag.submitForm()}
-              >
-                Register
-              </Button>
-            </Form.Item>
+            <Row>
+              <Col span={12} offset={6}>
+                <Divider>Sign Up</Divider>
+                <Form.Item>
+                  <Input
+                    name="username"
+                    placeholder="Username"
+                    onChange={(e) => {
+                      formikbag.setFieldValue('username', e.target.value);
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Input
+                    name="email"
+                    placeholder="Email"
+                    onChange={(e) => {
+                      formikbag.setFieldValue('email', e.target.value);
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Input
+                    name="password"
+                    placeholder="Password"
+                    onChange={(e) => {
+                      formikbag.setFieldValue('password', e.target.value);
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="button"
+                    onClick={() => formikbag.submitForm()}
+                  >
+                    Register
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
           </form>
         );
       }}

@@ -39,7 +39,6 @@ const CreateTodoForm = () => {
         }
       }}
       render={(formikbag) => {
-        console.log(formikbag.values, '====');
         return (
           <form>
             <Form.Item>

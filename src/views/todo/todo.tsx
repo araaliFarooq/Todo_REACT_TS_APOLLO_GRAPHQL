@@ -17,16 +17,13 @@ const Todo = () => {
   if (!data) {
     return <p>Not found</p>;
   }
-
-  console.log(data.todoList, 'data----->todo');
-
   return (
     <div>
       <Row>
         <Col span={12} offset={6}>
           <Divider>Create Todo Note</Divider>
           <CreateTodoForm />
-          <Divider>Todos</Divider>
+          <Divider>Todo Notes</Divider>
           {loading ? (
             <Spin style={{ marginTop: 16, display: 'block' }} />
           ) : (
@@ -34,6 +31,7 @@ const Todo = () => {
               {data.todoList.map((todo: any) => (
                 <Card key={todo.id} style={{ marginTop: 16 }} actions={[]}>
                   <Card.Meta title={todo.title} description={todo.complete} />
+                  {console.log('-->>', todo)}
                 </Card>
               ))}
             </div>
