@@ -7,55 +7,78 @@ import { useMutation } from 'react-apollo';
 import { TokenAuthDocument } from 'src/generated/apolloComponents';
 // import flowright from 'lodash.flowright';
 
+import { Formik } from 'formik';
+
+interface MyFormValues {
+  username: String;
+  password: String;
+}
 const Login = () => {
   const [tokenAuth] = useMutation(TokenAuthDocument);
   const [tokenData, setTokenData] = React.useState();
+  const initialValues: MyFormValues = {
+    username: '',
+    password: ''
+  };
 
   return (
-    // tslint:disable-next-line: no-empty
-
-    <form
-      // tslint:disable-next-line: jsx-no-lambda
-      onSubmit={async (e) => {
-        e.preventDefault();
+    <Formik
+      initialValues={initialValues}
+      onSubmit={(values, actions) => {
         try {
-          //   await createTodo({ variables: { title: 'hello' } });
           tokenAuth({
-            variables: { username: 'AraaliFarooq', password: 'araali' }
-          })
-            .then((res) => {
-              console.log(res, 'data===>');
-              if (res) {
-                setTokenData(res as any);
+            variables: {
+              username: values.username,
+              password: values.password
+            }
+          }).then((res) => {
+            console.log(res, 'data===>');
+            if (res) {
+              setTokenData(res as any);
 
-                localStorage.setItem('token', res.data.tokenAuth.token);
-                console.log(tokenData, 'the data2');
-              }
+              localStorage.setItem('token', res.data.tokenAuth.token);
+              console.log(tokenData, 'the data2');
+            }
 
-              //   const { token } = tokenAuth;
-              //   console.log(data, 'token===');
-              console.log(localStorage.getItem('token'), 'localst');
-            })
-            .catch((err) => console.log(err, 'err'));
+            //   const { token } = tokenAuth;
+            //   console.log(data, 'token===');
+            console.log(localStorage.getItem('token'), 'localst');
+          });
         } catch (error) {
-          console.log(error, '>>>>>>>>>>>>>error');
+          console.log('error', error);
         }
       }}
-    >
-      <Form.Item>
-        <Input placeholder="username" value={''} onChange={() => {}} />
-      </Form.Item>
+      render={(formikbag) => {
+        return (
+          <form>
+            <Form.Item>
+              <Input
+                name="username"
+                placeholder="Username"
+                onChange={(e) => {
+                  formikbag.setFieldValue('email', e.target.value);
+                }}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Input
+                name="password"
+                placeholder="Password"
+                onChange={(e) => {
+                  formikbag.setFieldValue('password', e.target.value);
+                }}
+              />
+            </Form.Item>
 
-      <Form.Item>
-        <Input placeholder="password" value={''} onChange={() => {}} />
-      </Form.Item>
-
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Login
-        </Button>
-      </Form.Item>
-    </form>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Login
+              </Button>
+            </Form.Item>
+          </form>
+        );
+      }}
+    />
   );
 };
 

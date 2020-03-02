@@ -9,12 +9,3 @@ export const fetchTodoQuery = gql`
     }
   }
 `;
-
-// query {
-//   todoList{
-//     id
-//     title
-//     complete
-
-//   }
-// }

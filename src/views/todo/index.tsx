@@ -3,46 +3,68 @@ import { Button, Form, Input } from 'antd';
 import * as React from 'react';
 // tslint:disable-next-line: ordered-imports
 import { useMutation } from 'react-apollo';
-// import { tokenAuthMutation } from 'src/graphql/todo/mutations/createTodo';
-// import flowright from 'lodash.flowright';
+import { Formik } from 'formik';
 
-import {
-  //   CreateTodoMutation,
-  CreateTodoDocument
-} from '../../generated/apolloComponents';
+import { CreateTodoDocument } from '../../generated/apolloComponents';
+import { fetchTodoQuery } from 'src/graphql/todo/queries/fetchTodo';
 
-const CreateNoteForm = () => {
-  const [createTodo, { data }] = useMutation(CreateTodoDocument);
+interface MyFormValues {
+  title: string;
+}
 
-  console.log(data, '-------->');
+const CreateTodoForm = () => {
+  const [createTodo] = useMutation(CreateTodoDocument);
+
+  const initialValues: MyFormValues = { title: '' };
 
   return (
     // tslint:disable-next-line: no-empty
 
-    <form
-      // tslint:disable-next-line: jsx-no-lambda
-      onSubmit={async (e) => {
-        e.preventDefault();
+    <Formik
+      initialValues={initialValues}
+      onSubmit={(values, actions) => {
         try {
-          //   await createTodo({ variables: { title: 'hello' } });
-          createTodo({ variables: { title: 'hello' } })
+          createTodo({
+            variables: { title: values.title },
+            refetchQueries: [
+              {
+                query: fetchTodoQuery
+              }
+            ]
+          })
             .then((data) => console.log(data, 'data'))
             .catch((err) => console.log(err, 'err'));
         } catch (error) {
-          console.log(error, '>>>>>>>>>>>>>error');
+          console.log('error', error);
         }
       }}
-    >
-      <Form.Item>
-        <Input placeholder="Todo" value={''} onChange={() => {}} />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Create
-        </Button>
-      </Form.Item>
-    </form>
+      render={(formikbag) => {
+        console.log(formikbag.values, '====');
+        return (
+          <form>
+            <Form.Item>
+              <Input
+                name="title"
+                placeholder="Todo"
+                onChange={(e) => {
+                  formikbag.setFieldValue('title', e.target.value);
+                }}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="button"
+                onClick={() => formikbag.submitForm()}
+              >
+                Create
+              </Button>
+            </Form.Item>
+          </form>
+        );
+      }}
+    />
   );
 };
 
-export default CreateNoteForm;
+export default CreateTodoForm;

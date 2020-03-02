@@ -1,16 +1,10 @@
 import { Card, Col, Divider, Row, Spin } from 'antd';
-// import * as queryString from 'query-string';
 import * as React from 'react';
-// import { RouteComponentProps, withRouter } from 'react-router';
-// import { NoteDeleteMutation, NotesQuery } from '../../generatedModels';
-
 import { useQuery } from 'react-apollo';
 import { fetchTodoQuery } from 'src/graphql/todo/queries/fetchTodo';
-import CreateNoteForm from '.';
+import CreateTodoForm from '.';
 
 const Todo = () => {
-  //   const [createTodo, { data }] = useMutation(CreateTodoDocument);
-
   const { data, loading, error } = useQuery(fetchTodoQuery);
 
   if (loading) {
@@ -31,7 +25,7 @@ const Todo = () => {
       <Row>
         <Col span={12} offset={6}>
           <Divider>Create Todo Note</Divider>
-          <CreateNoteForm />
+          <CreateTodoForm />
           <Divider>Todos</Divider>
           {loading ? (
             <Spin style={{ marginTop: 16, display: 'block' }} />
